@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agriculture Robot Control</title>
+    <style>
+        body {
+            font-family: 'Roboto', Arial, sans-serif;
+            background-color: #f4f7fc;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+        header {
+            background-color: #1e90ff;
+            color: #fff;
+            padding: 20px 0;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        header h1 {
+            margin: 0;
+            font-size: 28px;
+        }
+        main {
+            max-width: 900px;
+            margin: 30px auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        section {
+            margin-bottom: 20px;
+        }
+        h2 {
+            color: #1e90ff;
+            font-size: 22px;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #1e90ff;
+            padding-bottom: 5px;
+        }
+        .button {
+            display: inline-block;
+            padding: 14px 24px;
+            font-size: 15px;
+            font-weight: bold;
+            margin: 10px 8px;
+            color: #fff;
+            background-color: #1e90ff;
+            border: none;
+            border-radius: 6px;
+            text-transform: uppercase;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+        }
+        .button:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+        }
+        .button:active {
+            transform: translateY(0);
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+        }
+        footer {
+            text-align: center;
+            padding: 15px;
+            margin-top: 30px;
+            background-color: #f4f7fc;
+            font-size: 14px;
+            color: #666;
+        }
+        footer a {
+            color: #1e90ff;
+            text-decoration: none;
+        }
+        footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Agriculture Robot Control Dashboard</h1>
+    </header>
+    <main>
+        <section>
+            <h2>Vehicle Movement</h2>
+            <button class="button" onclick="sendRequest('esp1', '/forward')">Forward</button>
+            <button class="button" onclick="sendRequest('esp1', '/backward')">Backward</button>
+            <button class="button" onclick="sendRequest('esp1', '/left')">Left</button>
+            <button class="button" onclick="sendRequest('esp1', '/right')">Right</button>
+            <button class="button" onclick="sendRequest('esp1', '/stop')">Stop</button>
+        </section>
+
+        <section>
+            <h2>Grass Cutting</h2>
+            <button class="button" onclick="sendRequest('esp1', '/cut')">Grass Cutting</button>
+        </section>
+
+        <section>
+            <h2>Ploughing</h2>
+            <button class="button" onclick="sendRequest('esp2', '/plough')">Plough</button>
+        </section>
+
+        <section>
+            <h2>Seeding</h2>
+            <button class="button" onclick="sendRequest('esp2', '/seed')">Seed</button>
+        </section>
+
+        <section>
+            <h2>Water Pumping</h2>
+            <button class="button" onclick="sendRequest('esp2', '/water')">Water Pump</button>
+        </section>
+    </main>
+    <footer>
+        &copy; 2024 Agriculture Robot Project. All rights reserved. | <a href="#">Privacy Policy</a>
+    </footer>
+
+    <script>
+        const esp1BaseURL = "http://192.168.241.101"; // Replace <ESP1_IP> with the actual IP address of ESP1
+        const esp2BaseURL = "http://192.168.241.196"; // Replace <ESP2_IP> with the actual IP address of ESP2
+
+        function sendRequest(esp, endpoint) {
+            const baseURL = esp === 'esp1' ? esp1BaseURL : esp2BaseURL;
+            fetch(baseURL + endpoint)
+                .then(response => {
+                    if (response.ok) {
+                        alert(`Command sent to ${esp}: ${endpoint}`);
+                    } else {
+                        alert(`Failed to send command to ${esp}`);
+                    }
+                })
+                .catch(error => {
+                    alert(`Error connecting to ${esp}: ${error.message}`);
+                });
+        }
+    </script>
+</body>
+</html>
